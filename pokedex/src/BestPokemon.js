@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const BestPokemon = (props)=> {
+
     
     return(
         <div>
@@ -9,11 +10,31 @@ const BestPokemon = (props)=> {
             </p>
             <ul>
             {props.abilities.map((element,index)=>{
-                return (<li key={index}>{element}</li>)
+                return (<li key={index}>{element.ability.name}</li>)
             })}
             </ul>
         </div>
         )
 }
+const BestPokemonFetcher = () => {
+    const [bestPokemon, setBestPokemon] = React.useState(null);
 
-export default BestPokemon;
+    useEffect(()=>{
+
+        fetch("https://pokeapi.co/api/v2/pokemon/1/")
+        .then((response) => response.json())
+        .then((data) => setBestPokemon(data.abilities))
+
+    },[]);
+
+    return (bestPokemon && (
+        
+        <BestPokemon abilities={bestPokemon}/>
+    
+
+    ))
+    
+}
+
+export default BestPokemonFetcher;
+//export default BestPokemon;
